@@ -2,16 +2,17 @@ import tensorflow as tf
 import numpy as np
 from typing import Union, Tuple, Optional
 
-
 class DifferentialSolver:
-    def __init__(self, model: tf.keras.Model):
+    def __init__(self, model: tf.keras.Model, optimizer: Optional[tf.keras.optimizers.Optimizer] = None):
         """
         Initialize DifferentialSolver with a given neural network model.
 
         Args:
             model (tf.keras.Model): The physics-informed neural network model.
+            optimizer (tf.keras.optimizers.Optimizer, optional): The optimizer for training.
         """
         self.model = model
+        self.optimizer = optimizer or tf.keras.optimizers.Adam(learning_rate=0.001)
 
     def compute_gradients(
         self,
@@ -44,9 +45,64 @@ class DifferentialSolver:
             y_pred = self.model(inputs)
             gradients = self._compute_derivatives(tape, y_pred, x, t, order)
 
-        # Clean up the persistent tape to avoid memory leaks
         del tape
         return gradients
+
+    def apply_gradients(self, gradients_and_vars):
+        """
+        Apply gradients to model variables.
+
+        Args:
+            gradients_and_vars: List of (gradient, variable) pairs.
+        """
+        self.optimizer.apply_gradients(gradients_and_vars)
+
+    def train_step(self, x: tf.Tensor, t: Optional[tf.Tensor] = None, target: Optional[tf.Tensor] = None) -> tf.Tensor:
+        """
+        Perform a single training step.
+
+        Args:
+            x (tf.Tensor): Spatial input tensor.
+            t (tf.Tensor, optional): Time input tensor for PDEs.
+            target (tf.Tensor, optional): Target values for supervised loss.
+
+        Returns:
+            tf.Tensor: Loss value for this step.
+        """
+        with tf.GradientTape() as tape:
+            loss = self.residual_loss(x, t, target)
+
+        gradients = tape.gradient(loss, self.model.trainable_variables)
+        self.apply_gradients(zip(gradients, self.model.trainable_variables))
+        return loss
+
+    def train(self, dataset, epochs: int, verbose: bool = True):
+        """
+        Train the model for a specified number of epochs.
+
+        Args:
+            dataset: TensorFlow dataset containing training data.
+            epochs (int): Number of training epochs.
+            verbose (bool): Whether to print training progress.
+        """
+        for epoch in range(epochs):
+            total_loss = 0.0
+            num_batches = 0
+
+            for batch in dataset:
+                if isinstance(batch, tuple):
+                    x, t = batch if len(batch) == 2 else (batch[0], None)
+                    target = batch[2] if len(batch) > 2 else None
+                else:
+                    x, t, target = batch, None, None
+
+                loss = self.train_step(x, t, target)
+                total_loss += loss
+                num_batches += 1
+
+            avg_loss = total_loss / num_batches
+            if verbose and (epoch % 10 == 0 or epoch == epochs - 1):
+                print(f"Epoch {epoch}: Average Loss = {avg_loss:.6f}")
 
     @staticmethod
     def _validate_input(tensor: Union[np.ndarray, tf.Tensor]) -> tf.Tensor:
@@ -89,7 +145,6 @@ class DifferentialSolver:
         derivatives = [y_pred]
         current_tensor = y_pred
 
-        # Compute spatial derivatives
         for _ in range(order):
             derivative = tape.gradient(current_tensor, x)
             if derivative is None:
@@ -97,7 +152,6 @@ class DifferentialSolver:
             derivatives.append(derivative)
             current_tensor = derivative
 
-        # Compute time derivative for PDEs
         if t is not None:
             time_derivative = tape.gradient(y_pred, t)
             if time_derivative is None:

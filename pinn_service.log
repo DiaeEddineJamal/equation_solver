@@ -52,3 +52,18 @@
 2024-12-19 20:41:53,954 - INFO: 127.0.0.1 - - [19/Dec/2024 20:41:53] "POST /api/initialize HTTP/1.1" 200 -
 2024-12-19 20:42:14,786 - INFO: Equation solved successfully
 2024-12-19 20:42:14,788 - INFO: 127.0.0.1 - - [19/Dec/2024 20:42:14] "POST /api/solve HTTP/1.1" 200 -
+2024-12-19 20:51:03,205 - WARNING:  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2024-12-19 20:51:03,205 - INFO:  * Running on http://192.168.1.102:5000/ (Press CTRL+C to quit)
+2024-12-19 20:51:12,432 - INFO: 192.168.1.102 - - [19/Dec/2024 20:51:12] "GET / HTTP/1.1" 200 -
+2024-12-19 20:51:58,704 - INFO: Model initialized: {'status': 'success', 'message': 'Model initialized successfully', 'details': {'equation_type': 'ODE', 'layers': [10, 20, 20, 10, 1]}}
+2024-12-19 20:51:58,704 - INFO: 127.0.0.1 - - [19/Dec/2024 20:51:58] "POST /api/initialize HTTP/1.1" 200 -
+2024-12-19 20:52:30,566 - INFO: Equation solved successfully
+2024-12-19 20:52:30,566 - INFO: 127.0.0.1 - - [19/Dec/2024 20:52:30] "POST /api/solve HTTP/1.1" 200 -
+2024-12-19 21:01:30,600 - WARNING:  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2024-12-19 21:01:30,601 - INFO:  * Running on http://192.168.1.102:5000/ (Press CTRL+C to quit)
+2024-12-19 21:01:39,181 - INFO: Model initialized: {'status': 'success', 'message': 'Model initialized successfully', 'details': {'equation_type': 'ODE', 'layers': [10, 20, 20, 10, 1]}}
+2024-12-19 21:01:39,182 - INFO: 127.0.0.1 - - [19/Dec/2024 21:01:39] "POST /api/initialize HTTP/1.1" 200 -
+2024-12-19 21:03:38,574 - INFO: Equation solved successfully
+2024-12-19 21:03:38,574 - INFO: 127.0.0.1 - - [19/Dec/2024 21:03:38] "POST /api/solve HTTP/1.1" 200 -
