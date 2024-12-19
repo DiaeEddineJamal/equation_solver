@@ -18,7 +18,7 @@ This API provides a service for solving Ordinary Differential Equations (ODEs) a
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo-name/pinn-api.git
+   git clone https://github.com/DiaeEddineJamal/equation_solver.git
    
    ```
 
