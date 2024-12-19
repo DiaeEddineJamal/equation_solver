@@ -67,3 +67,5 @@
 2024-12-19 21:01:39,182 - INFO: 127.0.0.1 - - [19/Dec/2024 21:01:39] "POST /api/initialize HTTP/1.1" 200 -
 2024-12-19 21:03:38,574 - INFO: Equation solved successfully
 2024-12-19 21:03:38,574 - INFO: 127.0.0.1 - - [19/Dec/2024 21:03:38] "POST /api/solve HTTP/1.1" 200 -
+2024-12-19 21:11:19,322 - INFO: Equation solved successfully
+2024-12-19 21:11:19,325 - INFO: 127.0.0.1 - - [19/Dec/2024 21:11:19] "POST /api/solve HTTP/1.1" 200 -
