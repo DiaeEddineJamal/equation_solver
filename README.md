@@ -8,10 +8,11 @@ This API provides a service for solving Ordinary Differential Equations (ODEs) a
 
 ### **Requirements**
 
-- Python 3.8 or later
-- Flask
-- TensorFlow
-- Flask-CORS
+Flask==2.0.1
+Werkzeug==2.0.3
+flask-cors==3.0.10
+tensorflow>=2.8.0
+numpy>=1.19.2
 
 ### **Setup**
 
