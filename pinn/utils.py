@@ -1,19 +1,25 @@
-"""
-Utility functions for data preparation and processing
-"""
+
 import numpy as np
 import tensorflow as tf
 
-def create_training_data(equation_type='ODE', domain=None, num_points=100, noise_level=0.0, ground_truth_fn=None):
+
+def create_training_data(
+    equation_type='ODE',
+    domain=None,
+    num_points=100,
+    noise_level=0.0,
+    ground_truth_fn=None
+):
     """
     Create training data for Physics-Informed Neural Networks.
 
     Args:
         equation_type (str): Type of equation ('ODE', 'PDE', etc.).
-        domain (list or tuple): Domain boundaries [(x_start, x_end), (y_start, y_end)] for 1D or 2D problems.
+        domain (list or tuple): Domain boundaries [(x_start, x_end), (y_start, y_end)]
+                                for 1D or 2D problems.
         num_points (int): Number of collocation points.
-        noise_level (float): Percentage of noise to add to data.
-        ground_truth_fn (callable, optional): Custom ground truth function for generating target values.
+        noise_level (float): Standard deviation of noise to add to data (0 for no noise).
+        ground_truth_fn (callable, optional): Function to generate ground truth target values.
 
     Returns:
         tuple: (X_train, y_train) data for PINN training.
@@ -59,11 +65,12 @@ def create_training_data(equation_type='ODE', domain=None, num_points=100, noise
     else:
         raise ValueError(f"Unsupported equation type: {equation_type}")
 
-    # Convert to tensorflow tensors
+    # Convert to TensorFlow tensors
     X_train = tf.convert_to_tensor(X_train, dtype=tf.float32)
     y_train = tf.convert_to_tensor(y_train, dtype=tf.float32)
 
     return X_train, y_train
+
 
 def custom_ground_truth_example(x):
     """

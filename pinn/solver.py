@@ -38,12 +38,14 @@ class DifferentialSolver:
         else:
             inputs = x
 
-        # Compute gradients using TensorFlow's GradientTape
+        # Compute gradients using GradientTape
         with tf.GradientTape(persistent=True) as tape:
             tape.watch(inputs)
             y_pred = self.model(inputs)
             gradients = self._compute_derivatives(tape, y_pred, x, t, order)
 
+        # Clean up the persistent tape to avoid memory leaks
+        del tape
         return gradients
 
     @staticmethod
@@ -90,12 +92,16 @@ class DifferentialSolver:
         # Compute spatial derivatives
         for _ in range(order):
             derivative = tape.gradient(current_tensor, x)
+            if derivative is None:
+                raise ValueError("Gradient computation failed; ensure model supports differentiability.")
             derivatives.append(derivative)
             current_tensor = derivative
 
         # Compute time derivative for PDEs
         if t is not None:
             time_derivative = tape.gradient(y_pred, t)
+            if time_derivative is None:
+                raise ValueError("Time derivative computation failed.")
             derivatives.append(time_derivative)
 
         return tuple(derivatives)
@@ -157,4 +163,6 @@ class DifferentialSolver:
 
         # Default PDE loss
         _, second_derivative, time_derivative = gradients
+        if target is not None:
+            return tf.reduce_mean(tf.square(time_derivative - second_derivative - target))
         return tf.reduce_mean(tf.square(time_derivative - second_derivative))

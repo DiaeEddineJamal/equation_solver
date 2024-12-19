@@ -66,6 +66,12 @@ def initialize():
             'status': 'success',
             'data': result
         })
+    except json.JSONDecodeError:
+        logging.error('Invalid JSON format')
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid JSON format'
+        }), 400
     except Exception as e:
         logging.error(f'Initialization error: {str(e)}')
         return jsonify({
@@ -92,6 +98,12 @@ def solve():
             'status': 'success',
             'data': result
         })
+    except json.JSONDecodeError:
+        logging.error('Invalid JSON format for solving request')
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid JSON format for solving request'
+        }), 400
     except Exception as e:
         logging.error(f'Solving error: {str(e)}')
         return jsonify({

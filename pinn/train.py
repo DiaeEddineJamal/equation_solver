@@ -11,7 +11,7 @@ class PINNTrainer:
             optimizer (tf.keras.optimizers.Optimizer, optional): Optimizer for training. Defaults to Adam optimizer.
         """
         self.model = model
-        self.optimizer = optimizer if optimizer else tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer = optimizer or tf.keras.optimizers.Adam(learning_rate=0.001)
 
     def _default_loss(self, y_true, y_pred):
         """
@@ -40,11 +40,11 @@ class PINNTrainer:
             x = training_data
             y_pred = self.model(x)
 
+            # Compute derivatives
             with tf.GradientTape() as tape_inner:
                 tape_inner.watch(x)
                 y = self.model(x)
-
-            dy_dx = tape_inner.gradient(y, x)
+                dy_dx = tape_inner.gradient(y, x)
 
             # Define the ODE loss
             ode_loss = self._compute_ode_loss(x, y, dy_dx)
@@ -78,13 +78,9 @@ class PINNTrainer:
             u = self.model(inputs)
 
             # Compute derivatives
-            with tf.GradientTape() as tape_inner:
-                tape_inner.watch(inputs)
-                u = self.model(inputs)
-
-            du_dx = tape_inner.gradient(u, x)
-            du_dt = tape_inner.gradient(u, t)
-            d2u_dx2 = tape_inner.gradient(du_dx, x)
+            du_dx = tape.gradient(u, x)
+            du_dt = tape.gradient(u, t)
+            d2u_dx2 = tape.gradient(du_dx, x)
 
             # Define the PDE loss
             pde_loss = self._compute_pde_loss(u, du_dx, du_dt, d2u_dx2)
