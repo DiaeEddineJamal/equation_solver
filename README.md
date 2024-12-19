@@ -31,7 +31,7 @@ This API provides a service for solving Ordinary Differential Equations (ODEs) a
 3. Run the application:
 
    ```bash
-   python app.py
+   python main.py
    ```
 
 4. By default, the server runs on `http://localhost:5000`. You can customize the port using the `PORT` environment variable.
