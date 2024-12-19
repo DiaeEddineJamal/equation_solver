@@ -1,0 +1,13 @@
+{
+    "equation_type": "PDE",
+    "initial_conditions": [1, 0],
+    "boundary_conditions": [0, 1],
+    "number_of_points": 200,
+    "domain": [0, 2, 0, 2],
+    "solution": [
+        {"x": 0.0, "y": 0.0, "t": 0.0, "u": 0.0},
+        {"x": 1.0, "y": 1.0, "t": 1.0, "u": 0.5},
+        {"x": 2.0, "y": 2.0, "t": 2.0, "u": 0.9}
+    ],
+    "equation": "∂u/∂t = ∇²u + u"
+}

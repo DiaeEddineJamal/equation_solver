@@ -1,0 +1,14 @@
+{
+    "equation_type": "ODE",
+    "initial_conditions": [2],
+    "boundary_conditions": [0],
+    "number_of_points": 100,
+    "domain": [0, 10],
+    "solution": [
+        {"x": 0.0, "y": 2.0},
+        {"x": 1.0, "y": 1.5},
+        {"x": 5.0, "y": 2.25},
+        {"x": 10.0, "y": 10.0}
+    ],
+    "equation": "dy/dx = y - x"
+}

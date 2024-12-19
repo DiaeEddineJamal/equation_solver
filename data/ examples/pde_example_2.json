@@ -1,0 +1,8 @@
+{
+    "equation_type": "PDE",
+    "initial_conditions": [1, 0],
+    "boundary_conditions": [0, 1],
+    "number_of_points": 200,
+    "domain": [0, 2, 0, 2],
+    "equation": "∂u/∂t = ∇²u + u"
+}

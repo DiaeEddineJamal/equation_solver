@@ -1,0 +1,8 @@
+{
+    "equation_type": "ODE",
+    "initial_conditions": [1],
+    "boundary_conditions": [0],
+    "number_of_points": 100,
+    "domain": [0, 5],
+    "equation": "dy/dx = -y"
+}
